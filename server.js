@@ -62,5 +62,24 @@ app.get('/v1/configurator/:model', (req, res) => {
   });
 });
 
+let newsCache = [
+  { title: "初始新聞：BMW 系統上線", date: "2025-01-01" }
+];
+
+// 原本 /news 用 cache
+app.get('/v1/news', (req, res) => {
+  res.json(newsCache);
+});
+
+// 新增 /news/refresh，模擬從 BMW 官網更新
+app.post('/v1/news/refresh', (req, res) => {
+  // 模擬從 BMW 台灣官網抓的新聞
+  newsCache = [
+    { title: "2025 BMW iX 上市！", date: "2025-07-10" },
+    { title: "BMW 台灣 ConnectedDrive 升級", date: "2025-07-05" }
+  ];
+  res.json({ message: "新聞 cache 已更新！" });
+});
+
 // 最後保持原本的 listen
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
