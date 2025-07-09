@@ -2,27 +2,40 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 模擬的 BMW 車型資料
-const bmwModels = [
-  { series: '3 Series', model: '320i', fuelType: 'Petrol', basePrice: 40000 },
-  { series: '3 Series', model: '330e', fuelType: 'Hybrid', basePrice: 45000 },
-  { series: '5 Series', model: '520d', fuelType: 'Diesel', basePrice: 55000 },
-  { series: 'X Series', model: 'X5', fuelType: 'Petrol', basePrice: 70000 },
-];
-
-// 查詢全部車型
 app.get('/v1/models', (req, res) => {
-  res.json(bmwModels);
+  res.json([
+    { series: "3 Series", model: "320i", fuelType: "汽油", basePrice: 40000 },
+    { series: "3 Series", model: "330e", fuelType: "油電混合", basePrice: 45000 },
+    { series: "5 Series", model: "520i", fuelType: "汽油", basePrice: 52000 }
+  ]);
 });
 
-// 查詢指定系列
 app.get('/v1/models/:series', (req, res) => {
-  const series = req.params.series.toLowerCase();
-  const filtered = bmwModels.filter(m => m.series.toLowerCase().includes(series));
-  res.json(filtered);
+  const series = req.params.series;
+  const models = {
+    "3": [
+      { model: "320i", fuelType: "汽油", basePrice: 40000 },
+      { model: "330e", fuelType: "油電混合", basePrice: 45000 }
+    ],
+    "5": [
+      { model: "520i", fuelType: "汽油", basePrice: 52000 }
+    ]
+  };
+  res.json(models[series] || []);
 });
 
-// 啟動伺服器
-app.listen(PORT, () => {
-  console.log(`BMW API is running on port ${PORT}`);
+app.get('/v1/news', (req, res) => {
+  res.json([
+    { title: "全新 BMW iX3 正式上市！", date: "2025-07-01" },
+    { title: "BMW ConnectedDrive 功能升級", date: "2025-06-15" }
+  ]);
 });
+
+app.get('/v1/dealers', (req, res) => {
+  res.json([
+    { name: "台北 BMW 旗艦展示中心", address: "台北市信義區" },
+    { name: "高雄 BMW 展示中心", address: "高雄市左營區" }
+  ]);
+});
+
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
