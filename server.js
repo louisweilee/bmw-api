@@ -38,4 +38,29 @@ app.get('/v1/dealers', (req, res) => {
   ]);
 });
 
+// ✅ 新增 Compare 兩台車型
+app.get('/v1/compare/:model1/:model2', (req, res) => {
+  const { model1, model2 } = req.params;
+  res.json({
+    model1,
+    model2,
+    differences: [
+      { feature: '動力類型', model1: '汽油', model2: '油電混合' },
+      { feature: '基本售價', model1: '40,000 美元', model2: '45,000 美元' }
+    ]
+  });
+});
+
+// ✅ 新增 Configurator 查詢車型配備
+app.get('/v1/configurator/:model', (req, res) => {
+  const { model } = req.params;
+  res.json({
+    model,
+    colors: ['黑色', '白色', '藍色'],
+    packages: ['科技套件', '駕駛輔助套件'],
+    options: ['全景天窗', 'Harman Kardon 音響']
+  });
+});
+
+// 最後保持原本的 listen
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
