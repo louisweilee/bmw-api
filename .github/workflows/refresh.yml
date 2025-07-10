@@ -1,0 +1,14 @@
+name: Auto Refresh BMW News
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 每天 UTC 6:00，自動刷新
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make refresh request
+        run: |
+          curl -s -X GET "${{ secrets.REFRESH_URL }}"
